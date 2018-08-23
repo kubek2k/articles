@@ -41,9 +41,10 @@ restructuring modifications - simply an infrastructure refactoring
 - when it comes to state, Terraform requires it to be locked before applying the changes. 
 That means that we can assure that while we are applying changes no-one else does.
 
-I think when considering provisioning tool you should weigh above arguments and make sure if your stack is 
-more of a clean-sheet kinda thing, that can be recreated every time you change something, or is it rather 
-a living organism that requires modifications while its still running.
+I think when considering provisioning tool you should weigh up above arguments and make sure 
+if your stack is more of a clean-sheet kinda thing, that can be recreated every time 
+you change something, or is it rather a living organism that requires modifications 
+while it's still running.
 
 ## 2. Hard to start with the existing stack
 
