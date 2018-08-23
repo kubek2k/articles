@@ -8,7 +8,7 @@ AWS to one-solution providers like Logentries.
 
 One of the biggest promises of Terraform, is the realization of the idea of Infrastructure as Code 
 - the must-have for teams that want to name themselves DevOps-enabled (DevOps as in actual meaning). 
-While being so long- and, supposedly, well-thought, Terraform received a lot of critique in the community, 
+While being so long- and, supposedly, well-thought, Terraform received a lot of criticism in the community, 
 casting a doubt of the sense of the whole idea.
 
 In this article, I will enumerate issues we are dealing with in the project I am part of - 
@@ -20,11 +20,12 @@ sauce. What makes it even more complicated, is the fact, that our whole stack is
 ## 1. The evil state
 
 One of the main reasons people complain about, when it comes to Terraform, is the fact that it's stateful, 
-and the implications it brings. There are some downsides:
+and the implications it brings. There are two downsides:
 
 - the state has to be in-sync with the infrastructure all the time - that also means that you have to go 
-all-in when it comes to provisioning - i.e. no stack modifications has to be made outside of the provisioning tool
-- you have to keep the state somewhere
+all-in when it comes to provisioning - i.e. no stack modifications can be made outside of the provisioning tool
+
+- you have to keep the state somewhere - and this has to be a secure location as state has to carry secrets
 
 But there was a reason why the state was introduced into Terraform - the main was to allow the 
 tool to have a mapping between a resource represented in your definition files and the actual resources 
@@ -54,7 +55,7 @@ and this problem has been solved (at least at the system level).
 But here comes another issue that is tightly connected to this - if your stack is large you are doomed to issue 
 terraform import command multiple times for each resource, that is already there. 
 Without some nifty automation/scripting, it could be really time consuming and frustrating. 
-When you think about it, it would be nice to import such things in a bit more smart way. But this would require 
+When you think about it, it would be nice to import such things in a bit more smart way. This however would require 
 Terraform to treat resources not as a flatland of resources, but as a tree. In some cases, it makes perfect sense - 
 have a look at `heroku_app` vs `heroku_domain` or `heroku_drain.` There is certainly a lot of room for improvement in that space.
 
