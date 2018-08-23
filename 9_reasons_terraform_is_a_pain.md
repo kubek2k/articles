@@ -11,23 +11,28 @@ One of the biggest promises of Terraform, is the realization of the idea of Infr
 While being so long- and, supposedly, well-thought, Terraform received a lot of criticism in the community, 
 casting a doubt of the sense of the whole idea.
 
-In this article, I will enumerate issues we are dealing with in the project I am part of - 
-Omni Next. The case is quite specific - we deliver a platform of services floating in the Heroku and AWS 
-sauce. What makes it even more complicated, is the fact, that our whole stack is scaled vertically as 4 separate clones.
+Together with my team we decided, that we need something to deal with infrastructure complexity
+we have. Being a platform based on Heroku and AWS, scaled horizontally to four clones
+Terraform seemed like a perfect solution for us. Advanced and feature-full Terraform is,
+it doesn't come free - there is a couple of issues that you should be aware of. I will 
+enumerate the ones that hurted us the most, and show you our means to deal with them.
+In the end I will try to convince You that, even with those challenges, there is a lot 
+of room for Terraform in the tooling space.
 
 # The pains
 
 ## 1. The evil state
 
-One of the main reasons people complain about, when it comes to Terraform, is the fact that it's stateful, 
-and the implications it brings. There are two downsides:
+First thing you will complain about, when it comes to Terraform, is the fact that 
+it's stateful, and the implications it brings. I personally consider two issues that 
+it brings:
 
 - the state has to be in-sync with the infrastructure all the time - that also means that you have to go 
 all-in when it comes to provisioning - i.e. no stack modifications can be made outside of the provisioning tool
 
 - you have to keep the state somewhere - and this has to be a secure location as state has to carry secrets
 
-But there was a reason why the state was introduced into Terraform. It was introduced
+But there is a reason why the state was introduced into Terraform. It's there 
 to maintain the mapping between the resources represented in your definition files and 
 the actual resources created within cloud providers. 
 Having that, Terraform can give you a couple of advantages:
@@ -63,19 +68,22 @@ have a look at `heroku_app` vs `heroku_domain` or `heroku_drain.` There is certa
 
 ## 3. Complicated state modifications
 
-There is one additional thing that is a bit problematic when dealing with the state. When constantly refactoring your 
-infrastructure definition, you may end up renaming resources (changing their identifiers) or moving them 
-deeper into modules. Such changes are unfortunately hard for Terraform to follow, and leave it in a state 
-where it doesn't know that certain resources are simply misplaced in the state. If you run apply again, 
-you will end up in resource recreation, which is probably not something You always want. The good news is that there is a 
-`terraform state mv` command that allows you to move the logical resource around the state. 
+There is one additional thing that is a bit problematic when dealing with the state. While 
+constantly refactoring your infrastructure definition, you may end up renaming resources 
+(changing their identifiers) or moving them deeper into modules. 
+Such changes are unfortunately hard for Terraform to follow, and leave it in a state 
+where it doesn't know that certain resources are simply misplaced. 
+If you run `apply` again, you will end up in resource recreation, which is probably 
+not something You always want. The good news is that there is a `terraform state mv` 
+command that allows you to move the logical resource around the state. 
 The bad news is that in most of the cases you will need a lot of those.
 
 ## 4. Tricky conditional logic
 
 There are some people around the web who doesn't like the fact that Terraform is not really an actual 
 imperative programming language. To be perfectly honest I don't share that opinion - I think the provisioning definition 
-of the stack should be as declarative as it can - that leaves a lot less space for some deviations among the definitions. 
+of the stack should be as declarative as it can - that leaves a lot less space for some 
+deviations in the definitions. 
 On the other hand, the conditional logic provided by Terraform is a bit tricky. For example to define a resource that 
 is conditionally provisioned you make the resource to be a list, and use the count parameter to control it:
 
@@ -103,8 +111,13 @@ resource "heroku_app" "some_app" {
 ```
 
 So there is a point in saying, that you should stay away from constructs like this as far as you can. Of course, 
-it doesn't mean it should be a reason to resign from Terraform because of this, but be warned. There is a nice article 
-from Gruntwork about all of the things you can and can't do with count - really worth reading.
+it doesn't mean it should be a reason to resign from Terraform because of this, but be warned. There is a nice
+[article](https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9) from Gruntwork about all of the things you can and can't do with count 
+- really worth reading.
+
+In some close release this problem should be simplified with 
+[resource for_each](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each). 
+Let's keep our fingers crossed :).
 
 ## 5. One can't simply iterate over modules
 
@@ -152,9 +165,10 @@ module "app" {
 }
 ```
 
-and that was a gamechanger for us, because we had a lot of ceremony attached to each app - monitoring, logdrains,
-deployhooks (as above) to name a few. But there is one really hurting issue that comes with them - 
-for some reason they are not representing the same artifact as actual resources. That means, specifically, 
+and that was a gamechanger for us, because we had a lot of repeating resources attached to 
+each app - monitoring, logdrains, deployhooks (as above) to name a few. 
+But there is one really hurting issue that comes with them - for some reason they are 
+not representing the same artifact as actual resources. That means, specifically, 
 that they don't support count parameter which is critical when applying conditional logic stated above, 
 or in Omni Next case - iteration over services per each clone. In exact, instead of doing:
 
@@ -186,6 +200,7 @@ module "clone2_app" {
     configuration = "${var.clone2Configuration}"
 }
 ```
+This issue is also promised to be sorted out in a [forseeable future](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each#module-count-and-for_each)
 
 ## 6. Flickering resources
 
@@ -222,10 +237,17 @@ keep secrets. There are a couple of ways of dealing with that:
 - The Hashicorp's blessed way of doing the thing is to use their Vault - while this could be the way to go, 
 it complicates the whole setup even more and feels a little bit like an overkill
 
+- Similar to Vault you can use KMS from AWS to store secrets - but it carries the same 
+complexity luggage
+
 - Use a private git repository, and pretend that everything is okay, as long as no one's computer is stolen ;)
 
-- You could keep them somewhere local, have some special machine that would be exclusively for provisioning, 
-but let's face it - for a reasonably sized team that's a 'nogo'.
+- There is also a way of keeping secrets in the env vars. That kinda makes sense when you run
+the thing from CD/CI server - though in a sufficiently complicated system, this could be really
+hard to maintain
+
+- You could keep them somewhere local, have some special machine that would be exclusively for 
+provisioning, but let's face it - for a reasonably sized team that's a 'nogo'.
 
 - The way we dealt with this issue, was to keep all secret.tfvars along the .tf files, but encrypted 
 using git-secret. The way it works is that the scripts that are running `terraform plan` and `terraform apply` 
@@ -244,10 +266,12 @@ using Enterprise mode, leaves our provisioning a bit vendor locked-in.
 # So what should I (You) do?
 
 As it's quite visible, Terraform carries some issues that have to be taken into account while choosing 
-a provisioning solution. Some of those will eventually be sorted out, others are just architectural choices 
-Hashicorp had to make (most probably these were lesser-evil like decisions). As promised in the title, 
-I should give one major point why should have to consider Terraform - in my opinion, there are cases 
-where you simply have no other options. It's really hard to find a solution ranging over so many 
-cloud providers. Additionally, if your case is a living system, with a lot of infrastructure 
-repetitions that undergoes minimal infrastructure changes every day - Terraform is definitely worth taking a look at.
-
+a provisioning solution. Some of those will eventually be sorted out, others are just 
+architectural choices Hashicorp had to make (most probably these were lesser-evil like 
+decisions). 
+As promised in the title, I should give one major point why should have to consider 
+Terraform - in my opinion, there are cases where you simply have no other options. 
+It's really hard to find a solution ranging over so many cloud providers. 
+Additionally, if your case is a living system, with a lot of infrastructure repetitions 
+that undergoes minimal infrastructure changes every day - Terraform is definitely worth 
+taking a look.
