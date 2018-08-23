@@ -56,7 +56,7 @@ terraform import command multiple times for each resource, that is already there
 Without some nifty automation/scripting, it could be really time consuming and frustrating. 
 When you think about it, it would be nice to import such things in a bit more smart way. But this would require 
 Terraform to treat resources not as a flatland of resources, but as a tree. In some cases, it makes perfect sense - 
-have a look at `heroku_app` vs `heroku_domain` or `heroku_drain.` There is certainly a lot of space for improvement in that space.
+have a look at `heroku_app` vs `heroku_domain` or `heroku_drain.` There is certainly a lot of room for improvement in that space.
 
 ## 3. Complicated state modifications
 
