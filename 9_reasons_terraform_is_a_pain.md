@@ -29,11 +29,13 @@ all-in when it comes to provisioning - i.e. no stack modifications has to be mad
 But there was a reason why the state was introduced into Terraform - the main was to allow the 
 tool to have a mapping between a resource represented in your definition files and the actual resources 
 created within cloud providers. Having that, Terraform can give you a couple of advantages:
-
- - reading the state from providers (state syncing, also called refreshing), can be quite time-consuming. 
+ 
+- reading the state from providers (state syncing, also called refreshing), can be quite time-consuming. 
  If we could be 100% sure that the state is accurate, we could totally resign from that, and apply the change right away
+
 - having ability to follow the resources that already have been created, we can easier apply renames and 
 restructuring modifications - simply an infrastructure refactoring
+
 - when it comes to state, Terraform requires it to be locked before applying the changes. 
 That means that we can assure that while we are applying changes no-one else does.
 
@@ -68,7 +70,7 @@ The bad news is that in most of the cases you will need a lot of those.
 
 ## 4. Tricky conditional logic
 
-There are some people around the web who doesn't like the fact that terraform is not really an actual 
+There are some people around the web who doesn't like the fact that Terraform is not really an actual 
 imperative programming language. To be perfectly honest I don't share that opinion - I think the provisioning definition 
 of the stack should be as declarative as it can - that leaves a lot less space for some deviations among the definitions. 
 On the other hand, the conditional logic provided by Terraform is a bit tricky. For example to define a resource that 
@@ -211,7 +213,7 @@ It's really annoying - especially when you read the explanation of Hashicorp say
 
 ## 8. How to deal with secrets?
 
-One of the reasons why terraform files are so hard to be kept around is the question of where to 
+One of the reasons why Terraform files are so hard to be kept around is the question of where to 
 keep secrets. There are a couple of ways of dealing with that:
 
 - The Hashicorp's blessed way of doing the thing is to use their Vault - while this could be the way to go, 
@@ -220,9 +222,9 @@ it complicates the whole setup even more and feels a little bit like an overkill
 - You could keep them somewhere local, have some special machine that would be exclusively for provisioning, 
 but let's face it - for a reasonably sized team that's a 'nogo'.
 - The way we dealt with this issue, was to keep all secret.tfvars along the .tf files, but encrypted 
-using git-secret. The way it works is that the scripts that are running terraform plan and `terraform apply` 
+using git-secret. The way it works is that the scripts that are running `terraform plan` and `terraform apply` 
 for us first use git secret reveal and do git secret hide right after. While this is not a perfect solution, 
-it's at least simple enough to decrease the churn needed to run terraform from local machines.
+it's at least simple enough to decrease the churn needed to run Terraform from local machines.
 
 ## 9. One hosting offering
 
