@@ -27,9 +27,10 @@ all-in when it comes to provisioning - i.e. no stack modifications can be made o
 
 - you have to keep the state somewhere - and this has to be a secure location as state has to carry secrets
 
-But there was a reason why the state was introduced into Terraform - the main was to allow the 
-tool to have a mapping between a resource represented in your definition files and the actual resources 
-created within cloud providers. Having that, Terraform can give you a couple of advantages:
+But there was a reason why the state was introduced into Terraform. It was introduced
+to maintain the mapping between the resources represented in your definition files and 
+the actual resources created within cloud providers. 
+Having that, Terraform can give you a couple of advantages:
  
 - reading the state from providers (state syncing, also called refreshing), can be quite time-consuming. 
  If we could be 100% sure that the state is accurate, we could totally resign from that, and apply the change right away
