@@ -7,8 +7,10 @@ bringing together worlds of multiple cloud providers - ranging from multi-purpos
 AWS to one-solution providers like Logentries.
 
 One of the biggest promises of Terraform, is the realization of the idea of Infrastructure as Code 
-- the must-have for teams that want to name themselves DevOps-enabled (DevOps as in actual meaning). 
-While being so long- and, supposedly, well-thought, Terraform received a lot of criticism in the community, 
+- the must-have for teams that want to name themselves DevOps-enabled (DevOps as in 
+[actual meaning](https://smarketshq.com/devops-is-a-culture-not-a-title-prefix-b825b44dfcda)). 
+While being so long- and, supposedly, well-thought, Terraform received a lot of 
+[criticism](https://news.ycombinator.com/item?id=12214358) in the community, 
 casting a doubt of the sense of the whole idea.
 
 Together with my team we decided, that we need something to deal with infrastructure complexity
@@ -56,7 +58,7 @@ while it's still running.
 Back in the early days of Terraform, its issue tracker was full of complaints from people not being 
 able to leverage Terraform with the existing stack. The reason for it was the fact, that Terraform was 
 not able to incorporate it into the state (to my amazement, while looking for sign of this, I've found 
-my old PR that was trying to address that issue back then ;) ). Fortunately, the import command was introduced, 
+[my old PR](https://github.com/hashicorp/terraform/pull/875) that was trying to address that issue back then ;) ). Fortunately, the import command was introduced, 
 and this problem has been solved (at least at the system level).
 
 But here comes another issue that is tightly connected to this - if your stack is large you are doomed to issue 
@@ -169,7 +171,8 @@ and that was a gamechanger for us, because we had a lot of repeating resources a
 each app - monitoring, logdrains, deployhooks (as above) to name a few. 
 But there is one really hurting issue that comes with them - for some reason they are 
 not representing the same artifact as actual resources. That means, specifically, 
-that they don't support count parameter which is critical when applying conditional logic stated above, 
+that [they don't support count parameter](https://github.com/hashicorp/terraform/issues/953)
+which is critical when applying conditional logic stated above, 
 or in Omni Next case - iteration over services per each clone. In exact, instead of doing:
 
 **stack/services.tf (this is not real)**
@@ -227,7 +230,8 @@ resource "heroku_app" "sample" {
 
 when above thing is defined in module, you get a sweet message saying: `value of 'count' cannot be computed`..
 It's really annoying - especially when you read the explanation of Hashicorp saying that you can always use 
-`-target` switch to initialize resources on after another :(.
+`-target` switch to [initialize](https://github.com/hashicorp/terraform/issues/12570#issuecomment-318414280)
+resources on after another :(.
 
 ## 8. How to deal with secrets?
 
