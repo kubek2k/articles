@@ -1,6 +1,6 @@
 # Background story
 
-Back in 2015, when I first started finding out about Terraform, it looked like a Valhalla to me. 
+Back in 2015, when I first found out about Terraform, it looked like a Valhalla to me. 
 Working in a quite complicated microservices-based project, we were dealing with a lot of churns 
 when it came to provisioning the whole thing. And Terraform was about to solve that issue - 
 bringing together worlds of multiple cloud providers - ranging from multi-purpose giants like 
@@ -196,7 +196,7 @@ will be most probably fixed over time, you have all the time have it at the back
 
 ## 7. Those tiny details
 
-Another tiny issue that we had was the inability to use count value that is relying on the 
+Another tiny issue that we had was the inability to use `count` value that is relying on the 
 state of something that is meant to be computed (in modules). Even something like:
 
 ```
@@ -207,7 +207,7 @@ resource "heroku_app" "sample" {
 }
 ```
 
-when above thing is defined in module, you get a sweet message saying: value of 'count' cannot be computed.. 
+when above thing is defined in module, you get a sweet message saying: `value of 'count' cannot be computed`..
 It's really annoying - especially when you read the explanation of Hashicorp saying that you can always use 
 `-target` switch to initialize resources on after another :(.
 
@@ -218,9 +218,12 @@ keep secrets. There are a couple of ways of dealing with that:
 
 - The Hashicorp's blessed way of doing the thing is to use their Vault - while this could be the way to go, 
 it complicates the whole setup even more and feels a little bit like an overkill
+
 - Use a private git repository, and pretend that everything is okay, as long as no one's computer is stolen ;)
+
 - You could keep them somewhere local, have some special machine that would be exclusively for provisioning, 
 but let's face it - for a reasonably sized team that's a 'nogo'.
+
 - The way we dealt with this issue, was to keep all secret.tfvars along the .tf files, but encrypted 
 using git-secret. The way it works is that the scripts that are running `terraform plan` and `terraform apply` 
 for us first use git secret reveal and do git secret hide right after. While this is not a perfect solution, 
