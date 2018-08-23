@@ -237,7 +237,7 @@ it's at least simple enough to decrease the churn needed to run Terraform from l
 Initially, neither Hashicorp nor any other company was providing any hosting of Terraform. Being quite a 
 complicated piece of software to run (esp. the secrets holding part), there was a niche that had to be fulfilled, 
 and finally - it was, by Terraform Enterprise. Unfortunately, I have no experience with this, so can't tell for sure, 
-how it looks. But - assuming its the same feel stripped from rather problematic issues of dealing with 
+how it looks. But - assuming it's the same feel stripped from rather problematic issues of dealing with 
 state and sensitive data - I hope for the best. What might be worth more thinking is the fact that 
 using Enterprise mode, leaves our provisioning a bit vendor locked-in.
 
