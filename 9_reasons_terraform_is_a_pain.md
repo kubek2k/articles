@@ -1,12 +1,11 @@
 # Background story
 
 Back in 2015, when I first found out about Terraform, it looked like a Valhalla to me. 
-Working in a quite complicated microservices-based project, we were dealing with a lot of churns 
-when it came to provisioning the whole thing. And Terraform was about to solve that issue - 
-bringing together worlds of multiple cloud providers - ranging from multi-purpose giants like 
-AWS to one-solution providers like Logentries.
+Terraform was about to solve the issue of provisioning complicated infrastructure - 
+bringing together worlds of multiple cloud providers - ranging from multi-purpose giants 
+like AWS to one-solution providers like Logentries.
 
-Together with my team we decided, that we need something to deal with infrastructure complexity
+Together with my team we decided, that we need something to deal with the infrastructure complexity
 we have. For a platform based on Heroku and AWS, scaled horizontally to four clones
 Terraform seemed like a perfect solution. We wanted to have something that would let us
 realize the idea of Insfrastructre as a Code - a must for a 
