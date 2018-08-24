@@ -1,6 +1,8 @@
+# 9 reasons why Terraform is a pain, and 1 why you should still care.
+
 Working with Terraform can be difficult and cumbersome, but its still worth it.
 
-# Background story
+## Background story
 
 Back in 2015, when I first found out about Terraform, it looked like a Valhalla to me. 
 Terraform was about to solve the issue of provisioning complicated infrastructure - 
@@ -19,9 +21,9 @@ I will enumerate the ones that hurted us the most, and show you our means to dea
 In the end I will try to convince You that, even with those challenges, there is a lot 
 of room for Terraform in the tooling space.
 
-# The pains
+## The pains
 
-## 1. The evil state
+### 1. The evil state
 
 First thing you will complain about, when it comes to Terraform, is the fact that 
 it's stateful, and the implications it brings. I personally consider two issues that 
@@ -51,7 +53,7 @@ if your stack is more of a clean-sheet kinda thing, that can be recreated every 
 you change something, or is it rather a living organism that requires modifications 
 while it's still running.
 
-## 2. Hard to start with the existing stack
+### 2. Hard to start with the existing stack
 
 Back in the early days of Terraform, its issue tracker was full of complaints from people not being 
 able to leverage Terraform with the existing stack. The reason for it was the fact, that Terraform was 
@@ -66,7 +68,7 @@ When you think about it, it would be nice to import such things in a bit more sm
 Terraform to treat resources not as a flatland of resources, but as a tree. In some cases, it makes perfect sense - 
 have a look at `heroku_app` vs `heroku_domain` or `heroku_drain.` There is certainly a lot of room for improvement in that space.
 
-## 3. Complicated state modifications
+### 3. Complicated state modifications
 
 There is one additional thing that is a bit problematic when dealing with the state. While 
 constantly refactoring your infrastructure definition, you may end up renaming resources 
@@ -78,7 +80,7 @@ not something You always want. The good news is that there is a `terraform state
 command that allows you to move the logical resource around the state. 
 The bad news is that in most of the cases you will need a lot of those.
 
-## 4. Tricky conditional logic
+### 4. Tricky conditional logic
 
 There are some people around the web who doesn't like the fact that Terraform is not really an actual 
 imperative programming language. To be perfectly honest I don't share that opinion - I think the provisioning definition 
@@ -119,7 +121,7 @@ In some close release this problem should be simplified with
 [resource for_each](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each). 
 Let's keep our fingers crossed :).
 
-## 5. One can't simply iterate over modules
+### 5. One can't simply iterate over modules
 
 The actual idea of the module is awesome - it lets you enclose a reusable, set of resources in a reusable artifact. 
 Let's have a look at some simplified example:
@@ -201,9 +203,9 @@ module "clone2_app" {
     configuration = "${var.clone2Configuration}"
 }
 ```
-This issue is also promised to be sorted out in a [forseeable future](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each#module-count-and-for_each).
+This issue is also promised to be sorted out in a [forseeable future](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each##module-count-and-for_each).
 
-## 6. Flickering resources
+### 6. Flickering resources
 
 Being a 0.x software and feature-rich piece of software, Terraform carries a huge luggage of tiny 
 errors that you might stumble upon. One of those itchy things was the fact that some resources 
@@ -213,7 +215,7 @@ modifying those (no matter it didn't make much of a sense). It can lead to a lot
 esp. when someone touches Terraform for the first time. While this issue is provider-local and 
 will be most probably fixed over time, you have all the time have it at the back of your mind.
 
-## 7. Those tiny details
+### 7. Those tiny details
 
 Another tiny issue that we had was the inability to use `count` value that is relying on the 
 state of something that is meant to be computed (in modules). Even something like:
@@ -228,10 +230,10 @@ resource "heroku_app" "sample" {
 
 when above thing is defined in module, you get a sweet message saying: `value of 'count' cannot be computed`..
 It's really annoying - especially when you read the explanation of Hashicorp saying that you can always use 
-`-target` switch to [initialize](https://github.com/hashicorp/terraform/issues/12570#issuecomment-318414280)
+`-target` switch to [initialize](https://github.com/hashicorp/terraform/issues/12570##issuecomment-318414280)
 resources one after another :(.
 
-## 8. How to deal with secrets?
+### 8. How to deal with secrets?
 
 One of the reasons why Terraform files are so hard to be kept around is the question of where to 
 keep secrets. There are a couple of ways of dealing with that:
@@ -256,7 +258,7 @@ using git-secret. The way it works is that the scripts that are running `terrafo
 for us first use git secret reveal and do git secret hide right after. While this is not a perfect solution, 
 it's at least simple enough to decrease the churn needed to run Terraform from local machines.
 
-## 9. One hosting offering
+### 9. One hosting offering
 
 Initially, neither Hashicorp nor any other company was providing any hosting of Terraform. Being quite a 
 complicated piece of software to run (esp. the secrets holding part), there was a niche that had to be fulfilled, 
@@ -266,7 +268,7 @@ But - assuming it's the same feel stripped from rather problematic issues of dea
 state and sensitive data - I hope for the best. What might be considered an issue is the fact that 
 using Enterprise mode, leaves our provisioning a bit vendor locked-in.
 
-# So what should I (You) do?
+## So what should I (You) do?
 
 As it's quite visible, Terraform carries some issues that have to be taken into account while choosing 
 a provisioning solution. Some of those will eventually be sorted out, others are just 
