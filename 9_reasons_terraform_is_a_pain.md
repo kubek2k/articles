@@ -6,18 +6,15 @@ when it came to provisioning the whole thing. And Terraform was about to solve t
 bringing together worlds of multiple cloud providers - ranging from multi-purpose giants like 
 AWS to one-solution providers like Logentries.
 
-One of the biggest promises of Terraform, is the realization of the idea of Infrastructure as Code -
-the must-have for teams that want to name themselves DevOps-enabled (DevOps as in 
-[actual meaning](https://smarketshq.com/devops-is-a-culture-not-a-title-prefix-b825b44dfcda)). 
-While being so long- and, supposedly, well-thought, Terraform received a lot of 
-[criticism](https://news.ycombinator.com/item?id=12214358) in the community, 
-casting a doubt of the sense of the whole idea.
-
 Together with my team we decided, that we need something to deal with infrastructure complexity
-we have. Being a platform based on Heroku and AWS, scaled horizontally to four clones
-Terraform seemed like a perfect solution for us. Advanced and feature-full Terraform is,
-it doesn't come free - there is a couple of issues that you should be aware of. I will 
-enumerate the ones that hurted us the most, and show you our means to deal with them.
+we have. For a platform based on Heroku and AWS, scaled horizontally to four clones
+Terraform seemed like a perfect solution. We wanted to have something that would let us
+realize the idea of Insfrastructre as a Code - a must for a 
+[DevOps enabled](https://smarketshq.com/devops-is-a-culture-not-a-title-prefix-b825b44dfcda) team.
+Advanced and feature-full Terraform is, it doesn't come free - there is a couple of issues that 
+you should be aware of. 
+
+I will enumerate the ones that hurted us the most, and show you our means to deal with them.
 In the end I will try to convince You that, even with those challenges, there is a lot 
 of room for Terraform in the tooling space.
 
