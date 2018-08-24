@@ -58,11 +58,11 @@ while it's still running.
 Back in the early days of Terraform, its issue tracker was full of complaints from people not being 
 able to leverage Terraform with the existing stack. The reason for it was the fact, that Terraform was 
 not able to incorporate it into the state (to my amazement, while looking for sign of this, I've found 
-[my old PR](https://github.com/hashicorp/terraform/pull/875) that was trying to address that issue back then ;) ). Fortunately, the import command was introduced, 
-and this problem has been solved (at least at the system level).
+[my old PR](https://github.com/hashicorp/terraform/pull/875) that was trying to address that issue back then ;) ). 
+Fortunately, the import command was introduced, and this problem has been solved (at least at the system level).
 
 But here comes another issue that is tightly connected to this - if your stack is large you are doomed to issue 
-terraform import command multiple times for each resource, that is already there. 
+`terraform import` command multiple times for each resource, that is already there. 
 Without some nifty automation/scripting, it could be really time consuming and frustrating. 
 When you think about it, it would be nice to import such things in a bit more smart way. This however would require 
 Terraform to treat resources not as a flatland of resources, but as a tree. In some cases, it makes perfect sense - 
@@ -114,8 +114,8 @@ resource "heroku_app" "some_app" {
 
 So there is a point in saying, that you should stay away from constructs like this as far as you can. Of course, 
 it doesn't mean it should be a reason to resign from Terraform because of this, but be warned. There is a nice
-[article](https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9) from Gruntwork about all of the things you can and can't do with count 
-- really worth reading.
+[article](https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9) from 
+Gruntwork about all of the things you can and can't do with count - really worth reading.
 
 In some close release this problem should be simplified with 
 [resource for_each](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each). 
@@ -173,7 +173,7 @@ But there is one really hurting issue that comes with them - for some reason the
 not representing the same artifact as actual resources. That means, specifically, 
 that [they don't support count parameter](https://github.com/hashicorp/terraform/issues/953)
 which is critical when applying conditional logic stated above, 
-or in Omni Next case - iteration over services per each clone. In exact, instead of doing:
+or in our case - iteration over services per each clone. In exact, instead of doing:
 
 **stack/services.tf (this is not real)**
 
@@ -203,7 +203,7 @@ module "clone2_app" {
     configuration = "${var.clone2Configuration}"
 }
 ```
-This issue is also promised to be sorted out in a [forseeable future](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each#module-count-and-for_each)
+This issue is also promised to be sorted out in a [forseeable future](https://www.hashicorp.com/blog/hashicorp-terraform-0-12-preview-for-and-for-each#module-count-and-for_each).
 
 ## 6. Flickering resources
 
@@ -231,7 +231,7 @@ resource "heroku_app" "sample" {
 when above thing is defined in module, you get a sweet message saying: `value of 'count' cannot be computed`..
 It's really annoying - especially when you read the explanation of Hashicorp saying that you can always use 
 `-target` switch to [initialize](https://github.com/hashicorp/terraform/issues/12570#issuecomment-318414280)
-resources on after another :(.
+resources one after another :(.
 
 ## 8. How to deal with secrets?
 
@@ -262,9 +262,10 @@ it's at least simple enough to decrease the churn needed to run Terraform from l
 
 Initially, neither Hashicorp nor any other company was providing any hosting of Terraform. Being quite a 
 complicated piece of software to run (esp. the secrets holding part), there was a niche that had to be fulfilled, 
-and finally - it was, by Terraform Enterprise. Unfortunately, I have no experience with this, so can't tell for sure, 
-how it looks. But - assuming it's the same feel stripped from rather problematic issues of dealing with 
-state and sensitive data - I hope for the best. What might be worth more thinking is the fact that 
+and finally - it was, by [Terraform Enterprise](https://www.terraform.io/docs/enterprise/index.html). 
+Unfortunately, I have no experience with this, so can't tell for sure, how it looks. 
+But - assuming it's the same feel stripped from rather problematic issues of dealing with 
+state and sensitive data - I hope for the best. What might be considered an issue is the fact that 
 using Enterprise mode, leaves our provisioning a bit vendor locked-in.
 
 # So what should I (You) do?
