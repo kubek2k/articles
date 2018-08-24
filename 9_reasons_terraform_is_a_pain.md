@@ -6,8 +6,8 @@ when it came to provisioning the whole thing. And Terraform was about to solve t
 bringing together worlds of multiple cloud providers - ranging from multi-purpose giants like 
 AWS to one-solution providers like Logentries.
 
-One of the biggest promises of Terraform, is the realization of the idea of Infrastructure as Code 
-- the must-have for teams that want to name themselves DevOps-enabled (DevOps as in 
+One of the biggest promises of Terraform, is the realization of the idea of Infrastructure as Code -
+the must-have for teams that want to name themselves DevOps-enabled (DevOps as in 
 [actual meaning](https://smarketshq.com/devops-is-a-culture-not-a-title-prefix-b825b44dfcda)). 
 While being so long- and, supposedly, well-thought, Terraform received a lot of 
 [criticism](https://news.ycombinator.com/item?id=12214358) in the community, 
