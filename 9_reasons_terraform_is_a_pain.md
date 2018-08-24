@@ -1,3 +1,5 @@
+Working with Terraform can be difficult and cumbersome, but its still worth it.
+
 # Background story
 
 Back in 2015, when I first found out about Terraform, it looked like a Valhalla to me. 
